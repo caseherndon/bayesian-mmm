@@ -22,3 +22,10 @@ Data validation passed cleanly with no cleaning required (see `experiments.md` f
 No orthogonalization step (like the paper's §8 real-data example, where price/distribution/promotion were regressed apart due to r ≈ -0.98) is needed at this correlation strength — that technique stays in reserve if Day 6–8 diagnostics show the sampler struggling.
 
 **Convention noted**: `date_week` requires `parse_dates=["date_week"]` on every CSV reload — pandas does not preserve datetime dtype through a CSV round-trip. Apply this in every later notebook that loads `scenario_a_train.csv`.
+
+## Day 3 — Response transformation and ACF baseline
+Distribution check (Cell 3) compared raw `sales` against `log(sales)`. Both histograms are similarly shaped — mildly multimodal but not skewed — consistent with the additive generating process from Day 1 (`baseline + trend + seasonality + promo + media effects + Gaussian noise`). **Decision: model raw `sales`, not `log(sales)`.** This differs from the paper's §8 real shampoo-data example, which log-transforms sales — that reflects a property of that specific dataset, not a default to copy.
+
+Saved `true_params.json` to `data/scenario_a/` from the generating parameters (Day 1 table). This is for **Day 11 parameter-recovery evaluation only** — Day 4–6 priors must stay generic (paper Table 3-style: `beta(3,3)`, `gamma(3,1)`, etc.), not centered on these values, or "recovery" would be circular.
+
+Established baseline sales ACF at `max_lag=20`: lag 0 = 1.0, lag 1 = 0.786, lag 10 = 0.281, lag 20 = −0.303. Day 9–10's post-fit residual ACF comparison must reuse `max_lag=20` for the before/after comparison to be valid.

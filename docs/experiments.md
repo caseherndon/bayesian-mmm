@@ -47,3 +47,20 @@
 | yearly_seasonality | 0.50 | 0.10 | -0.03 | 0.06 | 0.00 | 1.00 | 0.74 |
 
 **Interpretation:** Channels behave largely independently, as designed. TV has the strongest direct correlation with sales among the three channels (0.66), consistent with TV having the largest true β. `yearly_seasonality` correlates most strongly with sales overall (0.74). The TikTok–trend correlation (0.70) is the one figure that needs to carry forward as a flag into model-building — logged in `decisions.md`.
+
+## Day 3 — Response ACF and distribution check
+
+**Autocorrelation of raw sales (`max_lag=20`):**
+
+| Lag | ACF |
+|---|---:|
+| 0 | 1.000 |
+| 1 | 0.786 |
+| 10 | 0.281 |
+| 20 | −0.303 |
+
+**Interpretation:** Strong lag-1 persistence (0.786), as expected given the trend and yearly seasonality baked into `sales`. The dip to −0.303 by lag 20 is consistent with the known 52-week seasonal cycle — lag 20 sits well before the half-period trough (~lag 26), so the decline toward negative correlation tracks the cycle rather than indicating noise; a positive rebound wouldn't be expected until closer to lag 52, outside this window.
+
+**Distribution check:** Raw `sales` and `log(sales)` histograms are comparably shaped with no meaningful skew in either, confirming the additive (not multiplicative) generating process from Day 1. Supports the decision to keep `sales` untransformed.
+
+`true_params.json` written to `data/scenario_a/` without error, for Day 11 use.

@@ -1,0 +1,18 @@
+{
+  "tv": {
+    "alpha": 0.6,
+    "lam": 0.05,
+    "beta": 1200
+  },
+  "search": {
+    "alpha": 0.4,
+    "lam": 0.08,
+    "beta": 900
+  },
+  "tiktok": {
+    "alpha": 0.3,
+    "lam": 0.03,
+    "beta": 700
+  },
+  "baseline": 2000
+}
